@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete(); // nullable for guest carts
+            $table->string('session_id')->nullable(); // for guest users
+            $table->decimal('total_amount', 10, 2)->default(0);
+            $table->integer('total_items')->default(0);
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index(['user_id']);
+            $table->index(['session_id']);
         });
     }
 

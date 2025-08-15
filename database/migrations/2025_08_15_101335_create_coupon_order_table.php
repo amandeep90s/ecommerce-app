@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_images', function (Blueprint $table) {
+        Schema::create('coupon_order', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('image_url');
-            $table->string('alt_text')->nullable();
-            $table->integer('sort_order')->default(0);
-            $table->boolean('is_primary')->default(false);
+            $table->foreignId('coupon_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->decimal('discount_amount', 10, 2); // Actual discount applied
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['product_id', 'is_primary']);
+            $table->unique(['coupon_id', 'order_id']);
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('coupon_order');
     }
 };
