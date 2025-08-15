@@ -13,8 +13,24 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->string('invoice_number')->unique();
+            $table->date('invoice_date');
+            $table->date('due_date')->nullable();
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('tax_amount', 10, 2)->default(0);
+            $table->decimal('discount_amount', 10, 2)->default(0);
+            $table->decimal('total_amount', 10, 2);
+            $table->string('currency', 3)->default('USD');
+            $table->enum('status', ['draft', 'sent', 'paid', 'overdue', 'cancelled'])->default('draft');
+            $table->text('notes')->nullable();
+            $table->json('billing_address');
+            $table->json('items');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['status', 'due_date']);
+            $table->index('invoice_number');
         });
     }
 

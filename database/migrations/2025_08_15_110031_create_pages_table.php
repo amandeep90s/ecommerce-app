@@ -13,8 +13,23 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->longText('content');
+            $table->text('excerpt')->nullable();
+            $table->string('featured_image')->nullable();
+            $table->string('template')->default('default');
+            $table->boolean('is_published')->default(false);
+            $table->timestamp('published_at')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->longText('custom_css')->nullable();
+            $table->longText('custom_js')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['is_published', 'published_at']);
+            $table->index('slug');
         });
     }
 

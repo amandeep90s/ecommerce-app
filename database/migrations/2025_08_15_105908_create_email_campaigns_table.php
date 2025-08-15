@@ -13,8 +13,26 @@ return new class extends Migration
     {
         Schema::create('email_campaigns', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('subject');
+            $table->longText('content');
+            $table->string('template')->nullable();
+            $table->string('sender_name');
+            $table->string('sender_email');
+            $table->json('recipient_list')->nullable();
+            $table->enum('status', ['draft', 'scheduled', 'sending', 'sent', 'cancelled'])->default('draft');
+            $table->timestamp('scheduled_at')->nullable();
+            $table->timestamp('sent_at')->nullable();
+            $table->integer('total_recipients')->default(0);
+            $table->integer('delivered_count')->default(0);
+            $table->integer('opened_count')->default(0);
+            $table->integer('clicked_count')->default(0);
+            $table->integer('bounced_count')->default(0);
+            $table->integer('unsubscribed_count')->default(0);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['status', 'scheduled_at']);
         });
     }
 

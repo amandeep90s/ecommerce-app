@@ -13,8 +13,16 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
+            $table->string('color', 7)->nullable(); // hex color
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['is_active', 'name']);
+            $table->index('slug');
         });
     }
 

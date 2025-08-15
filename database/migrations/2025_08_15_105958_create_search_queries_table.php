@@ -13,8 +13,17 @@ return new class extends Migration
     {
         Schema::create('search_queries', function (Blueprint $table) {
             $table->id();
+            $table->string('query');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('ip_address')->nullable();
+            $table->integer('results_count')->default(0);
+            $table->foreignId('clicked_product_id')->nullable()->constrained('products')->nullOnDelete();
+            $table->string('session_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+
+            $table->index(['query', 'created_at']);
+            $table->index(['user_id', 'created_at']);
+            $table->index('results_count');
         });
     }
 

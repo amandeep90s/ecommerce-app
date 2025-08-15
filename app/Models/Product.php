@@ -31,6 +31,9 @@ class Product extends Model
         'meta_title',
         'meta_description',
         'category_id',
+        'brand_id',
+        'vendor_id',
+        'tax_class_id',
     ];
 
     protected $casts = [
@@ -53,19 +56,43 @@ class Product extends Model
     }
 
     /**
-     * Get the product variants for the product.
+     * Get the brand that owns the product.
      */
-    public function variants(): HasMany
+    public function brand(): BelongsTo
     {
-        return $this->hasMany(ProductVariant::class);
+        return $this->belongsTo(Brand::class);
     }
 
     /**
-     * Get the product images for the product.
+     * Get the vendor that owns the product.
+     */
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
+    /**
+     * Get the tax class that owns the product.
+     */
+    public function taxClass(): BelongsTo
+    {
+        return $this->belongsTo(TaxClass::class);
+    }
+
+    /**
+     * Get the images for the product.
      */
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    /**
+     * Get the variants for the product.
+     */
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class);
     }
 
     /**
@@ -74,6 +101,30 @@ class Product extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Get the attribute values for the product.
+     */
+    public function attributeValues(): HasMany
+    {
+        return $this->hasMany(ProductAttributeValue::class);
+    }
+
+    /**
+     * Get the views for the product.
+     */
+    public function views(): HasMany
+    {
+        return $this->hasMany(ProductView::class);
+    }
+
+    /**
+     * Get the tags for the product.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     /**

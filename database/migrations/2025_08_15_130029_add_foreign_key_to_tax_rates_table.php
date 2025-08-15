@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tax_classes', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-
-            $table->index('is_active');
+        Schema::table('tax_rates', function (Blueprint $table) {
+            $table->foreignId('country_id')
+              ->nullable()
+              ->constrained('countries')
+              ->nullOnDelete();
         });
     }
 
@@ -27,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tax_classes');
+        Schema::table('tax_rates', function (Blueprint $table) {
+            $table->dropForeign(['country_id']);
+        });
     }
 };

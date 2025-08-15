@@ -13,8 +13,19 @@ return new class extends Migration
     {
         Schema::create('tax_rates', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->decimal('rate', 8, 4); // e.g., 8.2500 for 8.25%
+            $table->enum('type', ['percentage', 'fixed'])->default('percentage');
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->integer('priority')->default(0);
             $table->timestamps();
-            $table->softDeletes();
+
+            $table->index(['country_id', 'is_active']);
+            $table->index(['state', 'city']);
         });
     }
 

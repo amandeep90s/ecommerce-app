@@ -13,8 +13,23 @@ return new class extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->string('address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('country');
+            $table->string('postal_code');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('manager_name')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['is_active', 'is_default']);
+            $table->index('code');
         });
     }
 

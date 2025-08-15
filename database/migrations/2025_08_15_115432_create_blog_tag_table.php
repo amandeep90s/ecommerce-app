@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tax_rules', function (Blueprint $table) {
+        Schema::create('blog_tag', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tax_class_id');
-            $table->unsignedBigInteger('tax_rate_id');
-            $table->integer('priority')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('blog_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
-            $table->index(['tax_class_id', 'is_active']);
+            $table->unique(['blog_id', 'tag_id']);
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tax_rules');
+        Schema::dropIfExists('blog_tag');
     }
 };
