@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('tax_rates', function (Blueprint $table) {
             $table->foreignId('country_id')
-              ->nullable()
-              ->constrained('countries')
-              ->nullOnDelete();
+                ->nullable()
+                ->constrained('countries')
+                ->nullOnDelete();
         });
     }
 

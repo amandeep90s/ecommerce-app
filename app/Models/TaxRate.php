@@ -60,17 +60,17 @@ class TaxRate extends Model
     public function scopeForLocation($query, $countryId, $state = null, $city = null, $postalCode = null)
     {
         return $query->where('country_id', $countryId)
-                    ->where(function ($query) use ($state) {
-                        $query->whereNull('state')
-                              ->orWhere('state', $state);
-                    })
-                    ->where(function ($query) use ($city) {
-                        $query->whereNull('city')
-                              ->orWhere('city', $city);
-                    })
-                    ->where(function ($query) use ($postalCode) {
-                        $query->whereNull('postal_code')
-                              ->orWhere('postal_code', $postalCode);
-                    });
+            ->where(function ($query) use ($state) {
+                $query->whereNull('state')
+                    ->orWhere('state', $state);
+            })
+            ->where(function ($query) use ($city) {
+                $query->whereNull('city')
+                    ->orWhere('city', $city);
+            })
+            ->where(function ($query) use ($postalCode) {
+                $query->whereNull('postal_code')
+                    ->orWhere('postal_code', $postalCode);
+            });
     }
 }

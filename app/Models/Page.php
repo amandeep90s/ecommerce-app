@@ -36,10 +36,10 @@ class Page extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true)
-                    ->where(function ($query) {
-                        $query->whereNull('published_at')
-                              ->orWhere('published_at', '<=', now());
-                    });
+            ->where(function ($query) {
+                $query->whereNull('published_at')
+                    ->orWhere('published_at', '<=', now());
+            });
     }
 
     /**

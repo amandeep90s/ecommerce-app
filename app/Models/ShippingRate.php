@@ -57,9 +57,9 @@ class ShippingRate extends Model
     public function scopeForWeight($query, $weight)
     {
         return $query->where('weight_min', '<=', $weight)
-                    ->where(function ($query) use ($weight) {
-                        $query->whereNull('weight_max')
-                              ->orWhere('weight_max', '>=', $weight);
-                    });
+            ->where(function ($query) use ($weight) {
+                $query->whereNull('weight_max')
+                    ->orWhere('weight_max', '>=', $weight);
+            });
     }
 }

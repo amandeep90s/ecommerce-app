@@ -54,9 +54,9 @@ class SearchQuery extends Model
     public function scopePopular($query, $limit = 10)
     {
         return $query->selectRaw('query, COUNT(*) as search_count')
-                    ->groupBy('query')
-                    ->orderBy('search_count', 'desc')
-                    ->limit($limit);
+            ->groupBy('query')
+            ->orderBy('search_count', 'desc')
+            ->limit($limit);
     }
 
     /**

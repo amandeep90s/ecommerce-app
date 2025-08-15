@@ -49,6 +49,7 @@ class EmailCampaign extends Model
         if ($this->delivered_count == 0) {
             return 0;
         }
+
         return round(($this->opened_count / $this->delivered_count) * 100, 2);
     }
 
@@ -60,6 +61,7 @@ class EmailCampaign extends Model
         if ($this->delivered_count == 0) {
             return 0;
         }
+
         return round(($this->clicked_count / $this->delivered_count) * 100, 2);
     }
 }

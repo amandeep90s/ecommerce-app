@@ -84,6 +84,6 @@ class VendorPayout extends Model
         $timestamp = now()->format('YmdHis');
         $random = strtoupper(substr(uniqid(), -4));
 
-        return $prefix . $timestamp . $random;
+        return $prefix.$timestamp.$random;
     }
 }
