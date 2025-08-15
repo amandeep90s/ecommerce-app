@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('rate', 8, 4); // e.g., 8.2500 for 8.25%
             $table->enum('type', ['percentage', 'fixed'])->default('percentage');
-            $table->unsignedBigInteger('country_id')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('postal_code')->nullable();

@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('tax_rules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tax_class_id');
-            $table->unsignedBigInteger('tax_rate_id');
+            $table->foreignId('tax_class_id')->constrained('tax_classes')->onDelete('cascade');
+            $table->foreignId('tax_rate_id')->constrained('tax_rates')->onDelete('cascade');
             $table->integer('priority')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
+            $table->unique(['tax_class_id', 'tax_rate_id']);
             $table->index(['tax_class_id', 'is_active']);
         });
     }
