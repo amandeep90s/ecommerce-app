@@ -60,8 +60,9 @@ class OrderItem extends Model
     {
         $name = $this->product_name;
         if ($this->productVariant) {
-            $name .= ' - ' . $this->productVariant->name;
+            $name .= ' - '.$this->productVariant->name;
         }
+
         return $name;
     }
 

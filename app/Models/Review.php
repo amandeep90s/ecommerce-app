@@ -95,7 +95,7 @@ class Review extends Model
      */
     public function getStarRatingAttribute()
     {
-        return str_repeat('★', $this->rating) . str_repeat('☆', 5 - $this->rating);
+        return str_repeat('★', $this->rating).str_repeat('☆', 5 - $this->rating);
     }
 
     /**
@@ -103,7 +103,7 @@ class Review extends Model
      */
     public function hasImages()
     {
-        return !empty($this->images);
+        return ! empty($this->images);
     }
 
     /**

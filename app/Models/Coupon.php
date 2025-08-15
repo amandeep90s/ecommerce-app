@@ -42,8 +42,8 @@ class Coupon extends Model
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'coupon_order')
-                    ->withPivot('discount_amount')
-                    ->withTimestamps();
+            ->withPivot('discount_amount')
+            ->withTimestamps();
     }
 
     /**
@@ -60,14 +60,14 @@ class Coupon extends Model
     public function scopeValid($query)
     {
         return $query->where('is_active', true)
-                    ->where(function ($q) {
-                        $q->whereNull('starts_at')
-                          ->orWhere('starts_at', '<=', now());
-                    })
-                    ->where(function ($q) {
-                        $q->whereNull('expires_at')
-                          ->orWhere('expires_at', '>=', now());
-                    });
+            ->where(function ($q) {
+                $q->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('expires_at')
+                    ->orWhere('expires_at', '>=', now());
+            });
     }
 
     /**
@@ -75,7 +75,7 @@ class Coupon extends Model
      */
     public function calculateDiscount($orderTotal)
     {
-        if (!$this->isValidForAmount($orderTotal)) {
+        if (! $this->isValidForAmount($orderTotal)) {
             return 0;
         }
 
@@ -111,7 +111,7 @@ class Coupon extends Model
     public function isValid($userId = null)
     {
         // Check if active
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return false;
         }
 
@@ -158,7 +158,7 @@ class Coupon extends Model
     {
         $coupon = static::where('code', $code)->first();
 
-        if (!$coupon || !$coupon->isValid($userId)) {
+        if (! $coupon || ! $coupon->isValid($userId)) {
             return null;
         }
 

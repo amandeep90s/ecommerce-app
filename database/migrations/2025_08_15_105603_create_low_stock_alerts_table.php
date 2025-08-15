@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('low_stock_alerts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

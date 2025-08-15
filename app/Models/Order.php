@@ -90,8 +90,8 @@ class Order extends Model
     public function coupons(): BelongsToMany
     {
         return $this->belongsToMany(Coupon::class, 'coupon_order')
-                    ->withPivot('discount_amount')
-                    ->withTimestamps();
+            ->withPivot('discount_amount')
+            ->withTimestamps();
     }
 
     /**
@@ -103,7 +103,7 @@ class Order extends Model
         $timestamp = now()->format('YmdHis');
         $random = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
 
-        return $prefix . $timestamp . $random;
+        return $prefix.$timestamp.$random;
     }
 
     /**

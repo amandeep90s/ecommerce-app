@@ -69,8 +69,9 @@ class CartItem extends Model
     {
         $name = $this->product->name;
         if ($this->productVariant) {
-            $name .= ' - ' . $this->productVariant->name;
+            $name .= ' - '.$this->productVariant->name;
         }
+
         return $name;
     }
 

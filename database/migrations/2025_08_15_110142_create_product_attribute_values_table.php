@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('product_attribute_values', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

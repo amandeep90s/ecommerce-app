@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('shipping_zones', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

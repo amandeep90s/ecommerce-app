@@ -49,8 +49,8 @@ class Wishlist extends Model
     public static function removeFromWishlist($userId, $productId)
     {
         return static::where('user_id', $userId)
-                    ->where('product_id', $productId)
-                    ->delete();
+            ->where('product_id', $productId)
+            ->delete();
     }
 
     /**
@@ -59,8 +59,8 @@ class Wishlist extends Model
     public static function isInWishlist($userId, $productId)
     {
         return static::where('user_id', $userId)
-                    ->where('product_id', $productId)
-                    ->exists();
+            ->where('product_id', $productId)
+            ->exists();
     }
 
     /**
@@ -69,7 +69,7 @@ class Wishlist extends Model
     public static function getUserWishlist($userId)
     {
         return static::where('user_id', $userId)
-                    ->with('product')
-                    ->get();
+            ->with('product')
+            ->get();
     }
 }

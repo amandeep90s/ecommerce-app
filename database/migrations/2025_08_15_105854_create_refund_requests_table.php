@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('refund_requests', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
