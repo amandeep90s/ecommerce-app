@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\RedisService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -189,5 +190,96 @@ class Product extends Model
     public function reviewsCount()
     {
         return $this->reviews()->where('is_approved', true)->count();
+    }
+
+    /**
+     * Cache this product
+     */
+    public function cache($duration = null): void
+    {
+        $redisService = app(RedisService::class);
+        $redisService->cacheProduct($this, $duration ?? RedisService::LONG_CACHE_DURATION);
+    }
+
+    /**
+     * Get cached product with relationships
+     */
+    public static function getCached($identifier)
+    {
+        $redisService = app(RedisService::class);
+
+        return $redisService->remember(
+            RedisService::PRODUCT_PREFIX . (is_numeric($identifier) ? $identifier : 'slug:' . $identifier),
+            RedisService::LONG_CACHE_DURATION,
+            function () use ($identifier) {
+                if (is_numeric($identifier)) {
+                    return static::with(['category', 'brand', 'images', 'variants', 'reviews'])
+                        ->find($identifier);
+                }
+                return static::with(['category', 'brand', 'images', 'variants', 'reviews'])
+                    ->where('slug', $identifier)
+                    ->first();
+            }
+        );
+    }
+
+    /**
+     * Get cached featured products
+     */
+    public static function getFeatured($limit = 10)
+    {
+        $redisService = app(RedisService::class);
+
+        return $redisService->remember(
+            'featured:products:' . $limit,
+            RedisService::LONG_CACHE_DURATION,
+            function () use ($limit) {
+                return static::with(['category', 'brand', 'images'])
+                    ->where('is_featured', true)
+                    ->where('is_active', true)
+                    ->limit($limit)
+                    ->get();
+            }
+        );
+    }
+
+    /**
+     * Get cached popular products
+     */
+    public static function getPopular($limit = 10)
+    {
+        $redisService = app(RedisService::class);
+
+        return $redisService->remember(
+            'popular:products:' . $limit,
+            RedisService::MEDIUM_CACHE_DURATION,
+            function () use ($limit) {
+                return static::with(['category', 'brand', 'images'])
+                    ->where('is_active', true)
+                    ->orderBy('created_at', 'desc') // Using created_at instead of views_count for now
+                    ->limit($limit)
+                    ->get();
+            }
+        );
+    }
+
+    /**
+     * Clear cache when product is updated
+     */
+    protected static function booted()
+    {
+        static::saved(function ($product) {
+            $redisService = app(RedisService::class);
+            $redisService->clearProductCache($product->id);
+
+            // Clear related cache
+            $redisService->forget('featured:products:10');
+            $redisService->forget('popular:products:10');
+        });
+
+        static::deleted(function ($product) {
+            $redisService = app(RedisService::class);
+            $redisService->clearProductCache($product->id);
+        });
     }
 }
