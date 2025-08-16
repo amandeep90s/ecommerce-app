@@ -10,10 +10,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "darkaonline/l5-swagger": "^9.0",
         "inertiajs/inertia-laravel": "^2.0",
+        "intervention/image": "^3.11",
         "laravel/framework": "^12.0",
+        "laravel/scout": "^10.17",
         "laravel/tinker": "^2.10.1",
+        "maatwebsite/excel": "^3.1",
+        "predis/predis": "^3.2",
+        "razorpay/razorpay": "^2.9",
         "spatie/laravel-permission": "^6.21",
+        "spatie/laravel-sitemap": "^7.3",
+        "stripe/stripe-php": "^17.5",
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {
